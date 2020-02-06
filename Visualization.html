@@ -1,0 +1,42 @@
+
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <style>
+      .Center {
+                width:600px;
+                  height:500px;
+                  top: 50%;
+                  left: 50%;
+                  margin-top: 50px;
+                  margin-left: 350px;
+                  background-color: "null";
+
+              }
+
+      .background {
+
+      width: 80%;
+      height: 500px;
+      background-image: url(file:///Users/jessicagarza/Desktop/School/iUROP/SUTD_Building2_Level4.png);
+      background-size: 100% 100%;
+      }
+
+    </style>
+    <title>Visualization</title>
+  </head>
+<body onkeydown="moveSelection(event)" onkeyup="moveSelection(event)">
+<div class="background">
+<h1>Visualization</h1>
+Angle: <input type="text" name="angle"></input>
+<button name="button" onclick="rotateElem()">Rotate</button>
+<div class="Center">
+<script type="text/javascript" src ="/code.js" ></script>
+<div id="chartContainer" style="width:70%; height:500px;"></div>
+</div>
+
+
+<script src="file:///Users/jessicagarza/Desktop/jQuery.js"></script>
+<script src="file:///Users/jessicagarza/Desktop/canvasjs.min.js"></script>
+<script src="file:///Users/jessicagarza/Desktop/jquery.canvasjs.min.js"></script>
+</html>

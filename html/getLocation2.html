@@ -1,0 +1,65 @@
+<html>
+    <header>
+
+    </header>
+        <body>
+        <!-- <div id="demo">
+            <h1>The XMLHttpRequest Object</h1>
+            <button type="button" onclick="loadDoc()">Change Content</button>
+        </div> -->
+
+        </body>
+
+        <script>
+            //instantiate lists
+            var xlist = []
+            var ylist= []
+            var timestamplist = []
+
+            //function to call and store new values from php into the instantiated lists every 5 seconds
+            function loadDoc() {
+                var request = new XMLHttpRequest();
+                request.onreadystatechange = function() {
+                    if (request.readyState == 4 && request.status == 200) {
+                        for(i=0; i<3; i++){
+                            var x= obj[i].x;
+                            var y= obj[i].y;
+                            var timestamp= obj[i].timestamp;
+
+                            //store in array, ie replacing array every round with a max of 4 values inside
+                            xlist.push(x);
+                            ylist.push(y);
+                            timestamplist.push=(timestamp);
+
+                        }
+                        console.log(request.responseText);
+                       }
+                    }
+                request.open('GET', 'http://10.1.3.27/sutdVisualization/db_operation/insertSimulatedLocation.php?user_id=user1&&x=12&y=15', true);
+                request.send();
+
+            }, 5000); 
+
+            loadDoc();
+
+            data: [ {
+                markerType: "triangle",
+		            type: "spline", //change it to line, area, column, pie, etc
+		            lineThickness: 5,
+                    dataPoints: [
+                        { x: x[0], y: y[0] },
+                        { x: x[1], y: y[1] },
+                        { x: x[2], y: y[2] },
+                        { x: x[3], y: y[3] },
+		            ]
+	            }
+	            ]
+            };
+            $("#chartContainer").CanvasJSChart(options);
+
+            setTimeout(function(){
+                window.location.reload(1);
+            }, 5000);
+   
+        </script>
+</html>
