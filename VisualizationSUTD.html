@@ -1,0 +1,348 @@
+
+<!DOCTYPE html
+<html>
+<head>
+<style>
+.Center {
+              width:600px;
+              height:500px;
+              top: 50%;
+              left: 50%;
+              margin-top: 100px;
+              margin-left: 350px;
+          }
+  .background {
+
+  width: 1410px ;
+  height: 928px;
+  background-image: url(./SUTD_Building2_Level4.png);
+  background-size: 100% 100%;
+  }
+
+        }
+
+
+  </style>
+<title>SUTD Visualization</title>
+<body>
+<h1>Visualization</h1>
+
+  <p> Stretch X: <span id="a" >0</span>
+      <div id="a_slider" style="width: 460px; float:left;margin:10px;"></div>
+      <input id="input" type="number" step="0.1"/>px
+  </p>
+  <p>Stretch Y: <span id="b">0</span>
+      <div id="b_slider" style="width: 460px; float:left;margin:10px;"></div>
+      <input id="input2" type="number" step="0.1" />px
+  </p>
+  <p>Rotate: <span id="c">0 deg</span>
+      <div id="c_slider" style="width: 460px; float:left;margin:10px;"></div>
+      <input id="input3" type="number" step="0.1" />deg
+  </p>
+  <p> Translate X: <span id="d">0 px</span>
+      <div id="d_slider" style="width: 460px; float:left;margin:10px;"></div>
+      <input id="input4" type="number" step="0.1" />px
+  </p>
+  <p>Translate Y:  <span id="e">0 px</span>
+      <div id="e_slider" style="width: 460px; float:left;margin:10px;"></div>
+      <input id="input5" type="number" step="0.1"  />px
+  </p>
+  <p>Skew X:  <span id="f">0 deg</span>
+    <div id="f_slider" style="width: 460px; float:left;margin:10px;"></div>
+    <input id="input6" type="number" step="0.1" />deg
+  </p>
+  <p>Skew Y:  <span id="g">0 deg</span>
+    <div id="g_slider" style="width: 460px; float:left;margin:10px;"></div>
+    <input id="input7" type="number" step="0.1"  />deg
+  </p>
+
+<link rel="stylesheet" href="./js/jquery-ui.css">
+<script src="./js/jquery2.js"></script>
+<script src="./js/jquery-ui-v1.js"></script>
+<script src="./js/jquery.canvasjs.min.js"></script>
+<script type="text/javascript">
+    window.onload = function() {
+        var dataPoints = [];
+
+        function getDataPointsFromCSV(csv) {
+            var dataPoints = csvLines = points = [];
+            csvLines = csv.split(/[\r?\n|\r|\n]+/);
+
+            for (var i = 0; i < csvLines.length; i++)
+                if (csvLines[i].length > 0) {
+                    points = csvLines[i].split(",");
+                    dataPoints.push({
+                        x: parseFloat(points[0]),
+                        y: parseFloat(points[1])
+                    });
+                }
+            return dataPoints;
+        }
+
+	$.get("./ground.csv", function(data) {
+	    var chart = new CanvasJS.Chart("chartContainer", {
+
+
+		    title: {
+		         text: "",
+		    },
+   	legend: {
+
+       horizontalAlign: "right"
+
+     },
+
+       axisY:{
+	gridThickness: 0,
+	tickLength: 0,
+    	lineThickness: 0,
+	labelFormatter: function(){
+	return " "; }
+	      },
+
+	axisX:{
+	gridThickness: 0,
+	tickLength: 0,
+	lineThickness: 0,
+	labelFormatter: function(){
+      return " ";}
+       	},
+      	animationEnabled: true,
+	backgroundColor: null,
+
+		    data: [{
+			markerType: "triangle",
+		        type: "spline",
+			lineThickness: 3,
+	 dataPoints: getDataPointsFromCSV(data)
+		      }]
+	     });
+
+	      chart.render();
+
+	});
+  }
+//MOTION
+var a = 1;
+var b = 1;
+var c = 1;
+var d = 1;
+var e = 1;
+var f = 1;
+var g = 1;
+
+
+$("#a_slider").slider({
+    orientation: "horizontal",
+    range: false,
+    min: -50,
+    max: 50,
+    value: 1,
+    step: .1,
+    animate: true,
+    slide: function (event, ui) {
+        $( "#input" ).val(ui.value);
+        $("#a").text(ui.value);
+        a = ui.value;
+        compute();
+}
+ });
+
+ $("#input").change(function() {
+   var oldVal = $("#a_slider").slider("option", "value");
+   var newVal = $(this).val();
+   if (isNaN(newVal) || newVal < -50 || newVal > 50) {
+     $("#input").val(oldVal);
+   } else {
+     $("#a_slider").slider("option", "value", newVal);
+          }
+	a= this.value;
+        compute();
+
+        });
+
+$("#b_slider").slider({
+    orientation: "horizontal",
+    range: false,
+    min: -50,
+    max: 50,
+    value: 1,
+    step: .1,
+    animate: true,
+    slide: function (event, ui) {
+        $( "#input2" ).val(ui.value);
+        $("#b").text(ui.value);
+        b = ui.value;
+        compute();
+    }
+});
+
+$("#input2").change(function() {
+  var oldVal = $("#b_slider").slider("option", "value");
+  var newVal = $(this).val();
+  if (isNaN(newVal) || newVal < -50 || newVal > 50) {
+    $("#input2").val(oldVal);
+  } else {
+    $("#b_slider").slider("option", "value", newVal);
+  }
+ 	b = this.value;
+        compute();
+
+});
+
+$("#c_slider").slider({
+    orientation: "horizontal",
+    range: false,
+    min: -360,
+    max: 360,
+    value: 1,
+    step: .1,
+    animate: true,
+    slide: function (event, ui) {
+        $( "#input3" ).val(ui.value);
+        $("#c").text(ui.value);
+        c = ui.value;
+        compute();
+    }
+});
+$("#input3").change(function() {
+  var oldVal = $("#c_slider").slider("option", "value");
+  var newVal = $(this).val();
+  if (isNaN(newVal) || newVal < -360 || newVal > 360) {
+    $("#input3").val(oldVal);
+  } else {
+    $("#c_slider").slider("option", "value", newVal);
+  }
+ 	c = this.value;
+        compute();
+});
+
+
+$("#d_slider").slider({
+    orientation:"horizontal",
+    range: false,
+    min: -1000,
+    max: 1000,
+    value: 1,
+    step: .1,
+    animate: true,
+    slide: function (event, ui) {
+        $( "#input4" ).val(ui.value);
+        $("#d").text(ui.value);
+        d = ui.value;
+        compute();
+    }
+});
+$("#input4").change(function() {
+  var oldVal = $("#d_slider").slider("option", "value");
+  var newVal = $(this).val();
+  if (isNaN(newVal) || newVal < -1000 || newVal > 1000) {
+    $("#input4").val(oldVal);
+  } else {
+    $("#d_slider").slider("option", "value", newVal);
+  }
+ 	d= this.value;
+        compute();
+
+});
+
+$("#e_slider").slider({
+    orientation: "horizontal",
+    range: false,
+    min: -1000,
+    max: 1000,
+    value: 1,
+    step: .1,
+    animate: true,
+    slide: function (event, ui) {
+      $( "#input5" ).val(ui.value);
+        $("#e").text(ui.value);
+        e = ui.value;
+        compute();
+    }
+});
+$("#input5").change(function() {
+  var oldVal = $("#d_slider").slider("option", "value");
+  var newVal = $(this).val();
+  if (isNaN(newVal) || newVal < -1000 || newVal > 1000) {
+    $("#input5").val(oldVal);
+  } else {
+    $("#e_slider").slider("option", "value", newVal);
+  }
+ 	e = this.value;
+        compute();
+});
+$("#f_slider").slider({
+    orientation: "horizontal",
+    range: false,
+    min: -1000,
+    max: 1000,
+    value: 1,
+    step: .1,
+    animate: true,
+    slide: function (event, ui) {
+        $( "#input6" ).val(ui.value);
+        $("#f").text(ui.value);
+        f = ui.value;
+        compute();
+    }
+});
+
+$("#input6").change(function() {
+  var oldVal = $("#f_slider").slider("option", "value");
+  var newVal = $(this).val();
+  if (isNaN(newVal) || newVal < -1000 || newVal > 1000) {
+    $("#input6").val(oldVal);
+  } else {
+    $("#f_slider").slider("option", "value", newVal);
+  }
+ 	f = this.value;
+        compute();
+  });
+
+
+$("#g_slider").slider({
+    orientation: "horiozntal",
+    range: false,
+    min: -1000,
+    max: 1000,
+    value: 1,
+    step: .1,
+    animate: true,
+    slide: function (event, ui) {
+        $( "#input7" ).val(ui.value);
+        $("#g").text(ui.value);
+        g = ui.value;
+        compute();
+    }
+});
+
+$("#input7").change(function() {
+  var oldVal = $("#g_slider").slider("option", "value");
+  var newVal = $(this).val();
+  if (isNaN(newVal) || newVal < -1000 || newVal > 1000) {
+    $("#input7").val(oldVal);
+  } else {
+    $("#g_slider").slider("option", "value", newVal);
+  }
+ 	g = this.value;
+        compute();
+});
+
+function compute() {
+
+
+    $('.display').html('scale(' + a + ', ' + b + ') rotate('+ c +'deg) translate('+ d +'px,'+ e +'px) skew(' + f + 'deg, ' + g + 'deg)');
+    $('#chartContainer').css('transform', 'scale(' + a + ', ' + b + ') rotate('+ c +'deg) translate('+ d +'px,'+ e +'px) skew(' + f + 'deg, ' + g + 'deg)');
+    $('#chartContainer').css('-ms-transform', 'scale(' + a + ', ' + b + ') rotate('+ c +'deg) translate('+ d +'px,'+ e +'px) skew(' + f + 'deg, ' + g + 'deg)');
+    $('#chartContainer').css('-webkit-transform', 'scale(' + a + ', ' + b + ') rotate('+ c +'deg) translate('+ d +'px,'+ e +'px) skew(' + f + 'deg, ' + g + 'deg)');
+}
+</script>
+</head>
+<div class="background">
+<div class="Center">
+<div id="chartContainer" style="width:80%; height:500px;"></div>
+</div>
+</div>
+</body>
+</html>
